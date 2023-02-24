@@ -18,6 +18,7 @@ const store = configureStore({
     // user is a reducer
     users: userReducer,
     themee: themeReducer,
+    // apidatas: apiDataReducer.reducer
     apidatas: apiDataReducer
   }
 })
