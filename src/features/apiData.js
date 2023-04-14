@@ -23,23 +23,20 @@ import axios from "axios";
 
 export const fetchUserList = createAsyncThunk(
     "getData",
-    async (someArg, { rejectWithValue }) => {
-
+    async (id, { rejectWithValue }) => {
         try {
             const { data } = await axios.get(
-                "https://jsonplaceholder.typicode.com/posts?userId=1"
+                `https://jsonplaceholder.typicode.com/posts?userId=${id}`
+                // "https://jsonplaceholder.typicode.com/posts?userId=1"
             );
-            // console.log(data)
+            // console.log(data);
             return data;
 
         } catch (error) {
-            rejectWithValue(error.response);
+            // console.log(error.message);
+            return rejectWithValue(error.message);
         }
-
     }
-
-
-
 );
 
 const apiDataSlice = createSlice({
@@ -48,7 +45,7 @@ const apiDataSlice = createSlice({
         data: [],
         loading: false,
         isSuccess: false,
-        message: "",
+        errMessage: "",
     },
     reducers: {},
     extraReducers: {
@@ -60,10 +57,10 @@ const apiDataSlice = createSlice({
             state.data = payload;
             state.isSuccess = true;
         },
-        [fetchUserList.rejected]: (state, { payload }) => {
+        [fetchUserList.rejected]: (state, action) => {
             state.loading = false;
             state.isSuccess = false;
-            state.message = "failed";
+            state.errMessage = action.payload;
         },
     },
 });
